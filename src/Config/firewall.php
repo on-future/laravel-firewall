@@ -14,6 +14,14 @@ return [
 
     'log' => [
         'max_request_size' => 2048,
+
+        // Input names replaced with asterisks before the request is stored.
+        'except' => [
+            '_token',
+            'password',
+            'password_confirmation',
+            'current_password',
+        ],
     ],
 
     'cron' => [

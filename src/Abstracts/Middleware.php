@@ -59,7 +59,7 @@ abstract class Middleware
     {
         $this->request = $request;
         $this->middleware = strtolower((new \ReflectionClass($this))->getShortName());
-        $this->user_id = auth()->id() ?: 0;
+        $this->user_id = auth()->id();
     }
 
     public function getPatterns()

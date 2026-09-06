@@ -93,7 +93,16 @@ trait Helper
 
         $model = config('firewall.models.log', Log::class);
 
-        $input = urldecode(http_build_query($this->request->input()));
+        $input = $this->request->input();
+
+        foreach ((array) config('firewall.log.except') as $name) {
+            if (array_key_exists($name, $input)) {
+                $input[$name] = '******';
+            }
+        }
+
+        $input = urldecode(http_build_query($input));
+        $referrer = substr((string) $this->request->server('HTTP_REFERER'), 0, 191);
 
         return $model::create([
             'ip' => $this->ip(),
@@ -101,7 +110,7 @@ trait Helper
             'middleware' => $middleware,
             'user_id' => $user_id,
             'url' => $this->request->fullUrl(),
-            'referrer' => substr((string) $this->request->server('HTTP_REFERER'), 0, 191) ?: 'NULL',
+            'referrer' => $referrer !== '' ? $referrer : null,
             'request' => substr($input, 0, config('firewall.log.max_request_size')),
         ]);
     }

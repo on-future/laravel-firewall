@@ -14,13 +14,11 @@ class CheckLogin
     {
         $this->request = request();
         $this->middleware = 'login';
-        $this->user_id = 0;
+        $this->user_id = null;
 
         if ($this->skip($event)) {
             return;
         }
-
-        $this->request['password'] = '******';
 
         $log = $this->log();
 
