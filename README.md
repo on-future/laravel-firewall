@@ -70,8 +70,6 @@ Available middlewares applicable to routes:
 ```php
 firewall.all
 
-firewall.agent
-firewall.bot
 firewall.geo
 firewall.ip
 firewall.lfi

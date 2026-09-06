@@ -56,8 +56,6 @@ return [
 
     'all_middleware' => [
         'firewall.ip',
-        'firewall.agent',
-        'firewall.bot',
         'firewall.geo',
         'firewall.lfi',
         'firewall.php',
@@ -80,67 +78,6 @@ return [
             'routes' => [
                 'only' => [], // i.e. 'contact'
                 'except' => [], // i.e. 'admin/*'
-            ],
-        ],
-
-        'agent' => [
-            'enabled' => env('FIREWALL_MIDDLEWARE_AGENT_ENABLED', env('FIREWALL_ENABLED', true)),
-
-            'methods' => ['all'],
-
-            'routes' => [
-                'only' => [], // i.e. 'contact'
-                'except' => [], // i.e. 'admin/*'
-            ],
-
-            // https://github.com/jenssegers/agent
-            'browsers' => [
-                'allow' => [], // i.e. 'Chrome', 'Firefox'
-                'block' => [], // i.e. 'IE'
-            ],
-
-            'platforms' => [
-                'allow' => [], // i.e. 'Ubuntu', 'Windows'
-                'block' => [], // i.e. 'OS X'
-            ],
-
-            'devices' => [
-                'allow' => [], // i.e. 'Desktop', 'Mobile'
-                'block' => [], // i.e. 'Tablet'
-            ],
-
-            'properties' => [
-                'allow' => [], // i.e. 'Gecko', 'Version/5.1.7'
-                'block' => [], // i.e. 'AppleWebKit'
-            ],
-
-            'auto_block' => [
-                'attempts' => 5,
-                'frequency' => 1 * 60, // 1 minute
-                'period' => 30 * 60, // 30 minutes
-            ],
-        ],
-
-        'bot' => [
-            'enabled' => env('FIREWALL_MIDDLEWARE_BOT_ENABLED', env('FIREWALL_ENABLED', true)),
-
-            'methods' => ['all'],
-
-            'routes' => [
-                'only' => [], // i.e. 'contact'
-                'except' => [], // i.e. 'admin/*'
-            ],
-
-            // https://github.com/JayBizzle/Crawler-Detect/blob/master/raw/Crawlers.txt
-            'crawlers' => [
-                'allow' => [], // i.e. 'GoogleSites', 'GuzzleHttp'
-                'block' => [], // i.e. 'Holmes'
-            ],
-
-            'auto_block' => [
-                'attempts' => 5,
-                'frequency' => 1 * 60, // 1 minute
-                'period' => 30 * 60, // 30 minutes
             ],
         ],
 

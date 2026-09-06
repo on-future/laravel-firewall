@@ -50,8 +50,6 @@ class Provider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/Config/firewall.php', 'firewall');
-
-        $this->app->register(\Jenssegers\Agent\AgentServiceProvider::class);
     }
 
     /**
@@ -64,8 +62,6 @@ class Provider extends ServiceProvider
     public function registerMiddleware($router)
     {
         $router->middlewareGroup('firewall.all', config('firewall.all_middleware'));
-        $router->aliasMiddleware('firewall.agent', 'Akaunting\Firewall\Middleware\Agent');
-        $router->aliasMiddleware('firewall.bot', 'Akaunting\Firewall\Middleware\Bot');
         $router->aliasMiddleware('firewall.ip', 'Akaunting\Firewall\Middleware\Ip');
         $router->aliasMiddleware('firewall.geo', 'Akaunting\Firewall\Middleware\Geo');
         $router->aliasMiddleware('firewall.lfi', 'Akaunting\Firewall\Middleware\Lfi');
