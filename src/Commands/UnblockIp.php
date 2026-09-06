@@ -51,7 +51,6 @@ class UnblockIp extends Command
                 return;
             }
 
-            $ip->logs()->delete();
             $ip->delete();
         });
     }
