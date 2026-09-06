@@ -102,17 +102,32 @@ trait Helper
         }
 
         $input = urldecode(http_build_query($input));
-        $referrer = substr((string) $this->request->server('HTTP_REFERER'), 0, 191);
+        $referrer = $this->utf8(mb_strcut((string) $this->request->server('HTTP_REFERER'), 0, 191));
 
         return $model::create([
             'ip' => $this->ip(),
             'level' => $level,
             'middleware' => $middleware,
             'user_id' => $user_id,
-            'url' => $this->request->fullUrl(),
+            'url' => $this->utf8((string) $this->request->fullUrl()),
             'referrer' => $referrer !== '' ? $referrer : null,
-            'request' => substr($input, 0, config('firewall.log.max_request_size')),
+            'request' => $this->utf8(mb_strcut($input, 0, (int) config('firewall.log.max_request_size'))),
         ]);
+    }
+
+    /**
+     * An attacker controls these bytes, and a strict utf8mb4 connection rejects a broken
+     * sequence with SQLSTATE 22007. The write is what records the attempt and feeds the
+     * auto-block counter, so losing it hands the caller a 500 and no trace at all.
+     *
+     * Cutting on a byte offset is what breaks the sequence: a multi-byte character split
+     * in half leaves a dangling lead byte. urldecode() on the query string can also revive
+     * raw bytes the client sent percent-encoded, which is why the whole value is filtered
+     * and not only the truncated ones.
+     */
+    protected function utf8(string $value): string
+    {
+        return mb_convert_encoding($value, 'UTF-8', 'UTF-8');
     }
 
     public function ip()
