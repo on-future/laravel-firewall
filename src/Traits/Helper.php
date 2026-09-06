@@ -101,19 +101,13 @@ trait Helper
             'middleware' => $middleware,
             'user_id' => $user_id,
             'url' => $this->request->fullUrl(),
-            'referrer' => substr($this->request->server('HTTP_REFERER'), 0, 191) ?: 'NULL',
+            'referrer' => substr((string) $this->request->server('HTTP_REFERER'), 0, 191) ?: 'NULL',
             'request' => substr($input, 0, config('firewall.log.max_request_size')),
         ]);
     }
 
     public function ip()
     {
-        if ($cf_ip = $this->request->header('CF_CONNECTING_IP')) {
-            $ip = $cf_ip;
-        } else {
-            $ip = $this->request->ip();
-        }
-
-        return $ip;
+        return $this->request->ip();
     }
 }
